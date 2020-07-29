@@ -2520,9 +2520,9 @@ fncColorRamp <- function(maxT = 30, minT = 5, color.length = 14, palette = "heat
 }
 
 # === MORTALITY ===================================================================================
-  #fish die based on their size (cumulative experience) and instantaneous growth rate (measure of current conditions)
-    #smaller fish with lower growth rates more likely to die (sampled probabilistically)
 
+#fish die based on their size (cumulative experience) and instantaneous growth rate (measure of current conditions)
+    #smaller fish with lower growth rates more likely to die (sampled probabilistically)
 fncSurvive <- function(df, minprob = 0.997){
   #df: data frame of fish table with only the survivors, e.g., fish[fish$survive == 1, c("weight", "growth")]
   #minprob: smallest probability any fish can have of dying in any 12-hr time step
