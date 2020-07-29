@@ -15,7 +15,7 @@
 #         suggest mixed impacts of warmer temperatures and a non-native predator on Chinook salmon.
 #         Ecosphere, in press. [Updated movement rules used in this version.]
 #
-# Last functional updates 13 June 2019; editorial edits 2 July 2020
+# Last functional updates 13 June 2019; editorial edits 29 July 2020
 # See development notes at the end of this script
 #=======================================================================================================
 
@@ -32,12 +32,12 @@ library(RColorBrewer)
 library(gam)
 
 # Load Functions
-source("code/growth_regime_functions_v1.01.R")
+source("code/growth_regime_functions_v1.0.1.R")
 
 # List of simulation replicates (iterations) to run
   iter.list <- 1 #1:100  
-  iter <- iter.list[1] #select iteration(s) plot maps for fish and water temperature at each time step and some diagnostic plots for certain fish
-  plot.iter <- 1
+  iter <- iter.list[1] 
+  plot.iter <- 2 #select iteration(s) plot maps for fish and water temperature at each time step and some diagnostic plots for certain fish
   run <- fncGetRun()
   
 # DIRECTORY STRUCTURE
@@ -338,7 +338,7 @@ source("code/growth_regime_functions_v1.01.R")
       nd <- "d"; if(timeStep[tt] - floor(timeStep[tt]) < 0.2) {nd <- "n"}
 
       if(nd == "d"){
-      anifile = paste0(aniDir, "/", nd, sprintf("%03d", tt), ".png")
+      anifile <- paste0(aniDir, "/", nd, sprintf("%03d", tt), ".png")
       png(anifile, width = 6, height = 6, units = "in", res = 150)
 
       plot(ssn1, "WT", breaktype = "user", brks = breaks, lwdLineCol  =  "addfunccol", lwdLineEx = 8, lineCol = "darkgray", xlab = "", ylab = "", color.palette = cb, main = timeStep[tt])
@@ -354,15 +354,8 @@ source("code/growth_regime_functions_v1.01.R")
        if(20 %in% emerged) {plotSSN.mod(ssn1, PredPointsID = "fish", cex=1.8, addWithLegend = TRUE, myvar = 20, col = 5, pch = 19); plotSSN.mod(ssn1, PredPointsID = "fish", cex = 1.8, addWithLegend = TRUE, myvar = 20, pch = 21)} 
        if(30 %in% emerged) {plotSSN.mod(ssn1, PredPointsID = "fish", cex=1.8, addWithLegend = TRUE, myvar = 30, col = 6, pch = 19); plotSSN.mod(ssn1, PredPointsID = "fish", cex = 1.8, addWithLegend = TRUE, myvar = 30, pch = 21)} 
        if(40 %in% emerged) {plotSSN.mod(ssn1, PredPointsID = "fish", cex=1.8, addWithLegend = TRUE, myvar = 40, col = 2, pch = 19); plotSSN.mod(ssn1, PredPointsID = "fish", cex = 1.8, addWithLegend = TRUE, myvar = 40, pch = 21)}
-
-      ## for diagnostic testing:
-      #ifelse(nrow(fish)<=26, pids<- fish$pid, pids<- 1:26)
-      #for(fpid in pids){
-      #  symbol = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")[fpid]
-      #  plotSSN.mod(ssn1, PredPointsID = "fish", cex=0.8, addWithLegend = TRUE, myvar=fpid, col=1, pch2= symbol)
-      #  }
-      }
       dev.off()
+      }
       }
 
   # 2. MOVE FISH.
