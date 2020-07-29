@@ -1,11 +1,11 @@
 #=================================================================================================
-# Functions called by SWH-IBM, VERSION 1.0.05
+# Functions called by Growth Regime IBM, VERSION 1.0.1
 #
 #     Armstrong, J.B., A.H. Fullerton, C.E. Jordan, J.L. Ebersole, J.R. Bellmore, I. Arismendi, 
 #         B. Penaluna, and G.H. Reeves. The significance of warm habitat to the growth regime of 
 #         coldwater fishes.
 #
-# Last functional updates 13 June 2019; editorial edits 2 July 2020
+# Last functional updates 13 June 2019; editorial edits 29 July 2020
 #=================================================================================================
 
 # === BASIC FUNCTIONS ============================================================================
@@ -1164,7 +1164,7 @@ fncInitializeWT <- function(cc1 = cc[1], ssn = ssn1, plotit = "file"){
 }
 
 # Update each reach with new temperature data based on climate scenario and day
-#   Used when predictions are based on fncInitializeWT() and fncWTcc(); not used with empirical or SSNM modeled data
+#   Used when predictions are based on fncInitializeWT() and fncWTcc(); not used with empirical or modeled data
 fncUpdateWaterTemps <- function(ts, WTu, cc = cc1, ssn = ssn1, type = "Obs", diel = T, plotit = "file"){
   #WTu is a matrix of spatially distributed water temperatures from ssn
   #ts is the timestep; cc is the thermal regime scenario at the warmest location
@@ -1331,7 +1331,7 @@ fncFishDensity <- function(fish1.seg = fish1[, "seg"], fish2.seg = fish2[, "seg"
   return(density)
 }
 
-
+# Estimate the width of different reaches that is useable to fish
 fncUseableWidths <- function(dat=ssn@data[, c("rid", "WIDTH_M")]){
   widths <- dat[, 2]
   rid <- dat[, 1]
@@ -1572,13 +1572,13 @@ fncMoveOneStep <- function(ssn, plotit = "none") {
     segLength <- ssn@data[ssn@data$rid == seg, length.field]
     length2segBase <- fish$length2segBase[fish$pid == fpid]
     segRatio <- length2segRatio(seg, length2segBase)
-    initDirection <- moveDirection = fish$direction[fish$pid == fpid]
+    initDirection <- moveDirection <- fish$direction[fish$pid == fpid]
 
     # Only move if zero-inflated part of likelihood to move is 1:
     if(moveDist[fpid, "zi"] == 1){
       
-      remainingDist <- moveLength = moveDist[, "moveDist"][moveDist[, "pid"] == fpid]
-      dist2move <- dist.moved.total = 0
+      remainingDist <- moveLength <- moveDist[, "moveDist"][moveDist[, "pid"] == fpid]
+      dist2move <- dist.moved.total <- 0
       
       while(remainingDist>0){ #Continue as long as the fish has not yet moved its allocated distance
         
@@ -1814,7 +1814,7 @@ fncReadConstants.omykiss <- function() {
     CA = 0.628, 
     CB = -0.3, 
     CQ = 3.5, 
-    Cto = 25, 
+    CTO = 25, 
     CTM = 22.5, 
     CTL = 24.3, 
     CK1 = 0.2, 
@@ -1826,7 +1826,7 @@ fncReadConstants.omykiss <- function() {
     RA = 0.013, 
     RB = -0.217, 
     RQ = 2.2, 
-    Rto = 22, 
+    RTO = 22, 
     RTM = 26, 
     RTL = 0, 
     RK1 = 0, 
@@ -1860,7 +1860,7 @@ fncReadConstants.steelhead <- function() {
     CA = 0.628, 
     CB = -0.3, 
     CQ = 5, 
-    Cto = 20, 
+    CTO = 20, 
     CTM = 20, 
     CTL = 24, 
     CK1 = 0.33, 
@@ -1872,7 +1872,7 @@ fncReadConstants.steelhead <- function() {
     RA = 0.00264, 
     RB = -0.217, 
     RQ = 0.06818, 
-    Rto = 0.0234, 
+    RTO = 0.0234, 
     RTM = 0, 
     RTL = 25, 
     RK1 = 1, 
@@ -1906,7 +1906,7 @@ fncReadConstants.steelhead_ration <- function() {
     CA = 0.628, 
     CB = -0.3, 
     CQ = 5, 
-    Cto = 20, 
+    CTO = 20, 
     CTM = 20, 
     CTL = 24, 
     CK1 = 0.33, 
@@ -1918,7 +1918,7 @@ fncReadConstants.steelhead_ration <- function() {
     RA = 0.00264, 
     RB = -0.217, 
     RQ = 0.06818, 
-    Rto = 0.0234, 
+    RTO = 0.0234, 
     RTM = 0, 
     RTL = 25, 
     RK1 = 1, 
@@ -2197,22 +2197,22 @@ CalculateGrowth <- function(Constants, Input) {
   
   # Return Results	
   return(list(
-    "TotalC" <- TotalC, 
-    "W" <- W, 
-    "Growth" <- Growth, 
-    "Gg_WinBioE" <- Gg_WinBioE, 
-    "Gg_ELR" <- Gg_ELR, 
-    "Growth_j" <- Growth_j, 
-    "Consumption" <- Consumpt, 
-    "Consumption_j" <- Consumpt_j, 
-    "Excretion" <- Excret, 
-    "Excretion_j" <- Excret_j, 
-    "Egestion" <- Egest, 
-    "Egestion_j" <- Egest_j, 
-    "Respiration" <- Respirat, 
-    "Respiration_j" <- Respirat_j, 
-    "S.resp" <- S.resp, 
-    "Sj.resp" <- Sj.resp
+    "TotalC" = TotalC, 
+    "W" = W, 
+    "Growth" = Growth, 
+    "Gg_WinBioE" = Gg_WinBioE, 
+    "Gg_ELR" = Gg_ELR, 
+    "Growth_j" = Growth_j, 
+    "Consumption" = Consumpt, 
+    "Consumption_j" = Consumpt_j, 
+    "Excretion" = Excret, 
+    "Excretion_j" = Excret_j, 
+    "Egestion" = Egest, 
+    "Egestion_j" = Egest_j, 
+    "Respiration" = Respirat, 
+    "Respiration_j" =- Respirat_j, 
+    "S.resp" = S.resp, 
+    "Sj.resp" = Sj.resp
   ))
 }
 
