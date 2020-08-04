@@ -10,11 +10,12 @@ library(viridis)
 
 # Will need 'fncColBrewPlus'
 source("code/growth_regime_functions_v1.0.1.R")
+data.dir <- "data.out"
 
 # Load data
 iter <- 1
-load(paste0("data.out/fa.", iter, ".steelhead.network-swh.csws.Base.VariFood.RData")) 
-load(paste0("data.out/WT.", iter, ".steelhead.network-swh.csws.Base.VariFood.RData"))
+load(paste0(data.dir, "/fa.", iter, ".steelhead.network-swh.csws.Base.VariFood.RData")) 
+load(paste0(data.dir, "/WT.", iter, ".steelhead.network-swh.csws.Base.VariFood.RData"))
 fa <- fa[,,,1]; WT <- WT[,,1]
 
 ssn1<- importSSN("data.in/network-swh.ssn") #load ssn
@@ -105,7 +106,7 @@ ssn1@data$Prioritize[ssn1@data$annual.max >=20] = 1
 cb = rep("orange",nrow(ssn1@data))
 ssn1@obspoints@SSNPoints[[1]]@point.data$constant = 1
 
-png(paste0(plotDir,"/Map_prioritize2.png"), width = 6, height = 6, units = "in", res = 300) 
+png(paste0(plotDir,"/Map_prioritize.png"), width = 6, height = 6, units = "in", res = 300) 
 plot(ssn1, "xyz", axes = F, xlab = "", ylab = "", linecol = "white", lwdLineEx = 0.1) #this gives an error, just ignore - needs a base plot to work with
 #plot gray stream lines (for places where no ST data exist)
 for (i in 1:length(ssn1@lines)) for (j in 1:length(ssn1@lines[[i]])) lines(ssn1@lines[[i]]@Lines[[j]]@coords, col = "gray60", lwd = 10 * ssn1@data[i, "addfunccol"] + 0.4)
@@ -118,88 +119,12 @@ for (i in 1:length(ssn1@lines)) {
 dev.off()
 
 
-# Map of SWH & PCH
-  dat <- getSSNdata.frame(ssn1, "Obs")
-  swh.idx <- which(dat$rid %in%swh)
-  pch.idx <- which(dat$rid %in%pch)  
-  ssn1@obspoints@SSNPoints[[1]]@point.data$HabType <- NA
-  ssn1@obspoints@SSNPoints[[1]]@point.data$HabType[pch.idx] <- 1
-  ssn1@obspoints@SSNPoints[[1]]@point.data$HabType[swh.idx] <- 2
-  hw.idx <- which(dat$shreve < 5)
-  ms.idx <- which(dat$shreve > 15)
-  mid.idx <- which(dat$shreve >= 5 & dat$shreve <= 15)
-  ssn1@obspoints@SSNPoints[[1]]@point.data$Region <- NA
-  ssn1@obspoints@SSNPoints[[1]]@point.data$Region[hw.idx] <- 1
-  ssn1@obspoints@SSNPoints[[1]]@point.data$Region[mid.idx] <- 2
-  ssn1@obspoints@SSNPoints[[1]]@point.data$Region[ms.idx] <- 3
 
- # SWH habitats accessible
- breaks <- c(1, 2, 3)
- cb.hab <- c("#2171B5", "#F16913")
- png(paste0(plotDir, "/Map_habitats.png"), width = 6, height = 6, units = "in", res = 300) 
-   plot(ssn1, "HabType", breaktype = "user", brks = breaks, lwdLineEx = 2, lineCol = "darkgray", xlab = "X", ylab = "Y", color.palette = cb.hab)
- dev.off()
- 
- # Regions, general
- breaks <- c(1, 2, 3, 4)
- cb.reg<- c("#4F37B4", "#379CB4", "#37B44F")
- png(paste0(plotDir, "/Map_regions.png"), width = 6, height = 6, units = "in", res = 300) 
-  plot(ssn1, "Region", breaktype = "user", brks = breaks, lwdLineEx = 2, lineCol = "darkgray", xlab = "X", ylab = "Y", color.palette = cb.reg)
- dev.off()
- 
- 
- # Thermal regime in 3 Regions
- hw.reg <- WT[, hw.idx]
- mid.reg <-WT[, mid.idx]
- ms.reg <-WT[, ms.idx]
- hw.reg <- apply(hw.reg, 1, mean)
- mid.reg <- apply(mid.reg, 1, mean)
- ms.reg <- apply(ms.reg, 1, mean) 
- JD <- seq(1.0, 365.6, 0.5)
- reg.df <- cbind.data.frame(JD, hw.reg, mid.reg, ms.reg)
- write.csv(reg.df, "simulated.thermal.regimes.csv")
- 
- png(paste0(plotDir, "/Simulated.thermal.regimes.png"), width = 6, height = 4, units = "in", res = 300) 
- par(las = 1)
- plot(reg.df[, 4], type = 'l', col = cb.reg[3], xlab = "Date", ylab = expression("Temperature "~degree(C)), axes = F)
- lines(reg.df[, 3], col = cb.reg[2])
- lines(reg.df[, 2], col = cb.reg[1])
- axis(1, at = seq(1, 730, length.out = 13), labels = c("J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D", "J"))
- axis(2); box()
- dev.off()
-
-# A. Mass (g) accrued in each habitat
-dat.swh <- fa[, "growth", ]*fa[, "weight", ]*segs.swh
-dat.pch <- fa[, "growth", ]*fa[, "weight", ]*segs.pch
-#dat.btw <- fa[, "growth", ]*fa[, "weight", ]*segs.btw
-dat.all <- fa[, "growth", ]*fa[, "weight", ]
-
-swh.production <- apply(dat.swh, 1, sum, na.rm = T)
-pch.production <- apply(dat.pch, 1, sum, na.rm = T)
-#btw.production <- apply(dat.btw, 1, sum, na.rm = T)
-all.production <- apply(dat.all, 1, sum, na.rm = T)
-  
-summary(swh.production)
-summary(pch.production)
-#summary(btw.production)
-summary(all.production)
-
-png(paste0(plotDir, "/Production_Box_habitat", iter, ".png"), width = 4, height = 6, units = "in", res = 300) 
-  par(las = 1, oma = c(0, 1.5, 0, 0), cex = 1.3)
-  #cb.hab<- c(4, 1, 2)
-  #boxplot(list(pch.production, btw.production, swh.production), col = NA, border = cb.hab, cex = 0.3, ylab = "Mass accrued (g)", names = c("PCH", "BTW", "SWH"))
-  boxplot(list(all.production, pch.production, swh.production), col = c("gray70", "#2171B5", "#F16913"), 
-          ylim = c(-90, 1090), cex = 0.3, ylab = "Mass accrued (g)", names = c("Total", "Cool", "Warm"))
-  abline(h = 0, lty = 3)
-dev.off()
-
-production.df <- cbind.data.frame(all.production, swh.production, pch.production)
-write.csv(production.df, paste0("data.out/production_", iter, ".csv"))
-
+# Mass (g) accrued in each habitat
 #Plot scenario boxplots together
-prod.base <- read.csv("data.out/production_1.csv")[, -1]
-prod.divest <- read.csv("data.out/production_13.csv")[, -1]
-prod.enhance <- read.csv("data.out/production_14.csv")[, -1]
+prod.base <- read.csv(paste0(data.dir,"/production_1.csv"))[, -1]
+prod.divest <- read.csv(paste0(data.dir,"/production_13.csv"))[, -1]
+prod.enhance <- read.csv(paste0(data.dir,"/production_14.csv"))[, -1]
 prod <- cbind.data.frame(prod.base, NA, prod.divest, NA, prod.enhance)
 
 
@@ -216,7 +141,7 @@ dev.off()
 
 
 
-# B. Occupancy across seasons
+# Occupancy across seasons
 #Reaches over time, with aggregated fish info
 fnc <- sum
 byreach <- array(NA, dim = c(151, nvars, 730))
@@ -285,7 +210,7 @@ dev.off()
 
 
 
-# C. Trajectories
+# Trajectories
 #make color matrix based on WT experienced by fish
 cb <- cb.wt <-  fncColBrewPlus(n = 14, paint = F)
 breaks <- c(0, seq(4, 26, length.out = 12), 27) 
@@ -308,54 +233,6 @@ col.mat[fa[, "seg", d] %in% pch] <- cb.hab[2]
 col.mat[fa[, "seg", d] %in% swh] <- cb.hab[3]
 col.mat.hab <- col.mat
 rm(col.mat)
-
-# Plot 2x2 panel of trajectory of growth or weight, colored by PCH vs. SWH or by water temperature experienced
-# Note: takes awhile to run
-png(paste0(plotDir, "/Trajectories.", iter, ".png"), width = 8, height = 6, units = "in", res = 300)
-par(mfrow = c(2, 2), las = 1, mar = c(4, 5, 2, 2), oma = c(0, 0, 0, 0))
-for(var in c("weight", "growth")){
-  if(var == "weight"){yls = c(0, 1000); abval = 100; ylb = "Mass (g)"; yline = 3}
-  if(var == "growth"){yls = c(-0.022, 0.01); abval = 0; ylb = "Growth (g/g*d)"; yline = 4}
-
-  # SWH or PCH colors
-  # plot individual colored trajectories (captures min/max)
-  dat <- fa[, var, ]; dat <- dat[, d]
-  plot(dat[1, ], type = 'n', ylim = yls, xaxt = 'n', xlab = "", ylab = "", cex = 0.1)
-  axis(1, at = seq(1, 365, length.out = 13), labels = x.labels, cex.axis = 0.9)
-  mtext(ylb, 2, yline, las = 3)
-  for(i in 1:nrow(dat)){points(dat[i, ], col = col.mat.hab[i, ], cex = 0.1)}
-  if(var == "weight"){
-    legend("topleft", legend = c("In perennially cold habitat", "In seasonally warm habitat", "Median trajectory"), lwd = 2, col = c(cb.hab[2], cb.hab[3], 1), bty = 'n')
-    rect(xleft = 1, ybottom = 650, xright = 40, ytop = 700, col = rgb(216, 216, 216, 160, NULL, 255), border = NA)
-    text(55, 675, "Interquartile range", adj = 0)
-  }
-
-  # overlay interquartile range and median
-  dat<- fa[, var, ]; dat<- apply(dat, 2, quantile, na.rm = T)
-  dat<- t(dat)
-  dat.d<- dat[d, ]
-  if(var == "weight") polygon(c(1:365, rev(1:365)), c(dat.d[, 2], rev(dat.d[, 4])), border = NA, col = rgb(216, 216, 216, 160, NULL, 255)) #Q1/Q3
-  lines(dat.d[, 3], lwd = 2, col = rgb(5, 5, 5, 255, NULL, 255)) #Median
-
-  # WT colors
-  # plot individual colored trajectories (captures min/max)
-  dat <- fa[, var, ]; dat <- dat[, d]
-  plot(dat[1, ], type = 'n', ylim = yls, xaxt = 'n', xlab = "", ylab = "", cex = 0.1)
-  axis(1, at = seq(1, 365, length.out = 13), labels = x.labels, cex.axis = 0.9)
-  mtext(ylb, 2, yline, las = 3)
-  for(i in 1:nrow(dat)){points(dat[i, ], col = col.mat.wt[i, ], cex = 0.1)}
-  leglabs <- paste(seq(4, 24, 4), "to", seq(8, 28, 4))
-  mytitle<- expression("Temperature "~(degree~C))
-  if(var == "weight") legend("topleft", legend = leglabs, title = mytitle, lwd = 2, col = cb.wt[c(4, 6, 8, 10, 12, 14)], bty = 'n', cex = 0.9)
-
-  # overlay interquartile range and median
-  dat<- fa[, var, ]; dat<- apply(dat, 2, quantile, na.rm = T)
-  dat<- t(dat)
-  dat.d<- dat[d, ]
-  if(var == "weight") polygon(c(1:365, rev(1:365)), c(dat.d[, 2], rev(dat.d[, 4])), border = NA, col = rgb(216, 216, 216, 160, NULL, 255)) #Q1/Q3 ##border = "gray80"
-  lines(dat.d[, 3], lwd = 2, col = rgb(5, 5, 5, 255, NULL, 255)) #Median
-}
-dev.off()
 
 
 # FIGURE 5 element (upper left panel)
