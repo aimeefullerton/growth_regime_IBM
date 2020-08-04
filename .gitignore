@@ -37,3 +37,5 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+SensitivityAnalysis/.DS_Store
+.DS_Store
