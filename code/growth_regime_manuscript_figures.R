@@ -92,7 +92,7 @@ breaks<- c(seq(18, 22, length.out = 13), 31)
 left <- breaks[1:(length(breaks) - 1)]; rght<- breaks[2:length(breaks)]
 cb <- fncColBrewPlus(n = 14, paint = F)
 
-png(paste0(plotDir, "/SummerMaxMap_Points.", iter, ".png"), width = 6, height = 6, units = "in", res = 300) 
+png(paste0(plotDir, "/SummerMaxMap_Points.png"), width = 6, height = 6, units = "in", res = 300) 
   plot(ssn1, "annual.max", breaktype = "user", brks = breaks, lwdLineCol = "addfunccol", lwdLineEx = 8, lineCol = "darkgray", xlab = "", ylab = "", color.palette = cb) 
 dev.off()
 
@@ -129,7 +129,7 @@ prod <- cbind.data.frame(prod.base, NA, prod.divest, NA, prod.enhance)
 
 
 # FIGURE 5 element (lower right panel)
-png(paste0(plotDir, "/Production_Box_habitat", iter, ".png"), width = 6, height = 4.5, units = "in", res = 300)
+png(paste0(plotDir, "/Production_Box_habitat.png"), width = 6, height = 4.5, units = "in", res = 300)
   par(las = 1, mar = c(4, 5, 1, 1), oma = c(0, 0, 0, 0), cex = 1.3)
   colrs <- c("gray70", "#F16913", "#2171B5", NA)
   nms <- c("Baseline", "Scenario 1", "Scenario 2")
@@ -138,7 +138,6 @@ png(paste0(plotDir, "/Production_Box_habitat", iter, ".png"), width = 6, height 
   legend("topright", legend = c("Total (all habitats)", "In seasonally warm habitat", "In perennially cold habitat"), col = colrs[1:3], bty = 'n', cex = 0.9, lwd = 12)
   abline(h = 0, lty = 3)
 dev.off()
-
 
 
 # Occupancy across seasons
@@ -177,14 +176,9 @@ lm.spr <- lm(reaches2$spring.occ ~ reaches2$annual.max); summary(lm.spr)
 lm.sum <- lm(reaches2$summer.occ ~ reaches2$annual.max); summary(lm.sum)
 lm.aut <- lm(reaches2$fall.occ ~ reaches2$annual.max); summary(lm.aut)
 
-#sm.sum <- gam(reaches2$summer.occ ~ s(reaches2$annual.max), spar = 0.4)
-#plot(...)
-#lines(sm.sum$fitted.values)
-#gam.sum <- gamm(reaches2$summer.occ ~ s(reaches2$annual.max, k = 20), method = "ML"); summary(gam.sum$gam)
-
 
 # FIGURE 5 element (upper right panel)
-png(paste0(plotDir, "/pOccupancy_Season_Habitat", iter, ".png"), width = 6, height = 4.5, units = "in", res = 300) 
+png(paste0(plotDir, "/pOccupancy_Season_Habitat.png"), width = 6, height = 4.5, units = "in", res = 300) 
 par(las = 1, mar = c(4, 5, 1, 1), oma = c(0, 0, 0, 0))
 
 n <- 10; cb <- viridis(n)[c(2, 4, 7, 10)]
@@ -237,7 +231,7 @@ rm(col.mat)
 
 # FIGURE 5 element (upper left panel)
 # Plot growth colored by water temperature experienced, with median trajectory line in black
-png(paste0(plotDir, "/Trajectories_growth_WT.", iter, ".png"), width = 5.25, height = 4, units = "in", res = 300) 
+png(paste0(plotDir, "/Trajectories_growth_WT.png"), width = 5.25, height = 4, units = "in", res = 300) 
 par(las = 1, mar = c(4, 5, 2, 2), oma = c(0, 0, 0, 0))
   var <- "growth"
   yls <- c(-0.022, 0.01); abval <- 0; ylb <- "Growth (g/g*d)"; yline <- 4 
@@ -267,7 +261,7 @@ dev.off()
 
 # FIGURE 5 element (lower left panel)
 # Plot weight over time, colored by PCH vs SWH, with median and interquartile range overlaid
-png(paste0(plotDir, "/Trajectories_weight_habitat.", iter, ".png"), width = 5.25, height = 4, units = "in", res = 300) 
+png(paste0(plotDir, "/Trajectories_weight_habitat.png"), width = 5.25, height = 4, units = "in", res = 300) 
 par(las = 1, mar = c(4, 5, 2, 2), oma = c(0, 0, 0, 0))
   var <- "weight"
   yls <- c(0, 1000); abval <- 100; ylb <- "Mass (g)"; yline <- 3
