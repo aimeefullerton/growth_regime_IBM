@@ -1,0 +1,16 @@
+RUN INFO:
+netnwork: network-swh
+species: steelhead
+replicates: 1
+thermal regime: csws
+management scenario: Base
+food scenario: VariFood
+max density: 1
+movement multiplier: 1
+move-distance (SDlog): 4
+upper ration: 0.07
+lower ration: 0.02
+first date:1
+runtime (minutes): 145.525333333333
+seed: 1
+run: 06.14.22.38.28
