@@ -35,7 +35,7 @@ library(gam)
 source("code/growth_regime_functions_v1.0.1.R")
 
 # List of simulation replicates (iterations) to run (if longer than one, will need to un-comment the brackets for looping below)
-iter.list <- 1 #1:100  
+iter.list <- 10 #1:100  
 iter <- iter.list[1] 
 plot.iter <- 99 #select iteration(s) to plot maps for fish and water temperature at each time step and some diagnostic plots for certain fish
 run <- fncGetRun()
@@ -119,8 +119,8 @@ cb <- fncColBrewPlus(n = 14, paint = F)
   # MANAGEMENT SCENARIOS
   mgmt.scenarios <- c("Base", "DivestSWH", "EnhancePCH", "DivSWH.EnhPCH")
   ms <- mgmt.scenarios[1]
-  divest.prop <- 0.1 #proportion to reduce ration in seasonally warm habitat reaches
-  enhance.prop <- 0.1 #proportio to increase ration in perennially cool habitat reaches
+  divest.prop <- 0.1 #proportion to reduce ration in seasonally warm habitat reaches (if this scenario is used; has no effect on 'Base')
+  enhance.prop <- 0.1 #proportion to increase ration in perennially cool habitat reaches (if this scenario is used; has no effect on 'Base')
 
   (scenario.nm <- paste0(ms, ".", fs))
   
