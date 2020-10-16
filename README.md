@@ -49,20 +49,20 @@ STEP II: Run simulations for four scenarios.
 To run each simulation, you will need to update settings in the 'Scenarios & Startup' section
 
 1) Run 'Baseline' scenario
-      food.scenarios = "VariFood"
-      mgmt.scenarios = "Base"
+      - food.scenarios = "VariFood"
+      - mgmt.scenarios = "Base"
 
 2) Run 'Divest in seasonally warm habitats' scenario
-      food.scenarios = "VariFood"
-      mgmt.scenarios = "DivestSWH"
+      - food.scenarios = "VariFood"
+      - mgmt.scenarios = "DivestSWH"
 
 3) Run 'Enhance perennially cold habitats' scenario
-      food.scenarios = "VariFood"
-      mgmt.scenarios = "EnhancePCH"
+      - food.scenarios = "VariFood"
+      - mgmt.scenarios = "EnhancePCH"
 
 4) Run 'Constant Food' scenario
-      food.scenarios = "ConstFood"
-      mgmt.scenarios = "Base"
+      - food.scenarios = "ConstFood"
+      - mgmt.scenarios = "Base"
 
   After running all four scenarios, you should have new files in your data.out and plots folders.
   
