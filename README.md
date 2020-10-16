@@ -34,8 +34,8 @@ Follow these steps to download software, model input files, additional code, and
 	- pre-calculate_growth.R - this script was used to create 'wt.growth.array.RData', which is also available in 'data.in'.
  
    data.in
-	- wt.growth.array.RData [large file] Ð precalculated growth lookup array
-	- thermal.regime.730ts.csv Ð thermal regime (temperature over time in outlet reach)
+	- wt.growth.array.RData [large file] ? precalculated growth lookup array
+	- thermal.regime.730ts.csv ? thermal regime (temperature over time in outlet reach)
 	- network-swh.ssn [folder containing network-specific files needed by the model]
  
 5) Create a new R project in RStudio.
@@ -71,7 +71,7 @@ After running all four scenarios, you should have new files in your data.out and
 	- run.info.[scenario].txt - basic information about parameters used in this run
 	- fa.[iter].steelhead.[scenario].RData - array of fish results for each time step
 	- WT.[iter].steelhead.[scenario].RData - array of water temperature for each time step
-	- production_[iter].csv Ð summary of fish production by habitat type
+	- production_[iter].csv ? summary of fish production by habitat type
 
    plots
 	- [iter].steelhead.[scenario].png - a quick diagnostic summary
@@ -89,7 +89,4 @@ To run simulations for sensitivity analysis, run the model script with parameter
 STEP IV: Create figures and component panels for manuscript.
 
 See code/growth_regime_manuscript_figures.R.
-
-
-
 
