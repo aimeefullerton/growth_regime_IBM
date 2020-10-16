@@ -61,7 +61,7 @@ To run each simulation, you will need to update settings in the 'Scenarios & Sta
       mgmt.scenarios = "EnhancePCH"
 
 4) Run 'Constant Food' scenario
-      ood.scenarios = "ConstFood"
+      food.scenarios = "ConstFood"
       mgmt.scenarios = "Base"
 
   After running all four scenarios, you should have new files in your data.out and plots folders.
@@ -70,12 +70,12 @@ To run each simulation, you will need to update settings in the 'Scenarios & Sta
    - run.info.[scenario].txt - basic information about parameters used in this run
    - fa.[iter].steelhead.[scenario].RData - array of fish results for each time step
    - WT.[iter].steelhead.[scenario].RData - array of water temperature for each time step
-   - production_[iter].csv ? summary of fish production by habitat type
+   - production_[iter].csv - summary of fish production by habitat type
    
    plots
    - [iter].steelhead.[scenario].png - a quick diagnostic summary
    
-   plots.ani - maps of each time step for one iteration
+   plots.ani - maps of each time step for one iteration (if this option was turned on)
 
 ----------------------------------------------------------------------------------
 
