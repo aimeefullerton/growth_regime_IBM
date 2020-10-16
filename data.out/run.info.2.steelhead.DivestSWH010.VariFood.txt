@@ -1,0 +1,17 @@
+RUN INFO:
+netnwork: network-swh
+species: steelhead
+replicates: 1
+management scenario: DivestSWH
+SWH ration reduced by: 0.10
+PCH ration enhanced by: 0
+food scenario: VariFood
+max density: 1
+movement multiplier: 1
+move-distance (SDlog): 4
+upper ration: 0.07
+lower ration: 0.02
+first date:1
+runtime (minutes): 149.0054
+iter: 2
+run: 10.12.13.39.30
