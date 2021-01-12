@@ -1,3 +1,4 @@
+<a href="https://doi.org/10.5281/zenodo.4433065"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4433065.svg" alt="DOI"></a>
 
 ----------------------------------------------------------------------------------
 Growth Regime IBM, VERSION 1.0.1
